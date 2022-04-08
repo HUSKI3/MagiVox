@@ -80,7 +80,7 @@ static func gen_atlas(ImagePaths:Array):
 		for _x in range(current.get_size().x):
 			for _y in range(current.get_size().y):
 				var pixel = current.get_pixel(x,y)
-				Result.set_pixel(_x,_y, pixel)
+				Result.set_pixel(_x+x,_y+y, pixel)
 				print("pixel at", _x, _y)
 		
 		Coords[[x,y]] = texture_id

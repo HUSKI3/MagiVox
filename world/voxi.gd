@@ -28,6 +28,7 @@ func _ready():
 		]
 	)
 	image.save_png("res://assets/atlas.png")
+	
 	#add_child(image)
 	# Assume ModLoader injected the data into our Blocks and Entities
 
