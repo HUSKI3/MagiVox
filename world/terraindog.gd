@@ -16,25 +16,31 @@ static func random():
 static func genNoise():
 	var noise = OpenSimplexNoise.new()
 	noise.seed = "cumflex".hash()
-	noise.octaves = 3
-	noise.period = 40.0
-	noise.persistence = 0.5
+	noise.lacunarity = 2
+	noise.octaves = 4
+	noise.period = 100.0
+	noise.persistence = 0.8
 	return noise
 
-static func noisy(chunk_position):
+static func noisy(chunk_position, block_store, noise):
 	var block_data = {}
 	
-	if abs(chunk_position.y) > 5 or abs(chunk_position.y) < 5:
-		return {}
-
-	var noise = genNoise()
-	
+	#if abs(chunk_position.y) > 5 or abs(chunk_position.y) < 5:
+	#	return {}
+		
 	for x in range(SIZE):
 		for y in range(SIZE):
 			for z in range(SIZE):
 				var pos = Vector3(x, y, z)
-				if noise.get_noise_2d(chunk_position.x + x, chunk_position.z + z) * SIZE > chunk_position.y + y:
+				#print(pos, -noise.get_noise_2d(chunk_position.x + x, chunk_position.z + z) * SIZE > chunk_position.y + y)
+				if -noise.get_noise_2d(chunk_position.x + x, chunk_position.z + z) * SIZE > chunk_position.y + y:
+					print(chunk_position.x + x, chunk_position.z + z)
 					block_data[pos] = 1
+	#			else:
+	#				block_data[pos] = 2
+	#if noise.get_noise_2d(chunk_position.x + 0, chunk_position.z + 0) * SIZE > chunk_position.y + 0:
+	#	block_data[ Vector3(0, 0, 0)] = 1
+	
 	return block_data
 
 static func bubbly():
@@ -49,7 +55,7 @@ static func flat(chunk_position, block_store):
 	# We don't want to define a new BlockStore for every load, 
 	# but since this generates per chunk this shouldn't be an issue.
 	# We can just free the variable?
-	# Moved to voxi.gd -- var block_store = BlockStore.new()
+	# (99f94ac) Moved to voxi.gd -- var block_store = BlockStore.new()
 
 	if chunk_position.y != -1:
 		return data
@@ -57,5 +63,4 @@ static func flat(chunk_position, block_store):
 	for x in range(SIZE):
 		for z in range(SIZE):
 			data[Vector3(x, 0, z)] = block_store.getBlock(1)[1]
-	block_store = null 
 	return data

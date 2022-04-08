@@ -19,6 +19,8 @@ func _ready():
 	name = " Chunk at ({pos})".format({'pos':str(position)})
 	# Assume world gen
 	data = TerrainDog.flat(position, world.mod_loader)
+	#data = TerrainDog.noisy(position, world.mod_loader, world.noise)
+	print(position)
 	# Gen colliders
 	_gen_colliders()
 	var _thread := Thread.new()

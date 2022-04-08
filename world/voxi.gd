@@ -16,6 +16,8 @@ var chunks = {} # store our chunks here
 onready var player = $"../Player"
 onready var mod_loader =  BlockStore.new()
 
+# noise
+var noise = TerrainDog.genNoise()
 
 func _ready():
 	print("[VoxiWorld] --> World ready. Asking Modloader if there's anything to load...")

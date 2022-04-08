@@ -4,6 +4,7 @@ onready var player = $"../Player"
 
 func _process(delta):
 	text = "Debug:"
+	text += "\nFPS: " + str(Engine.get_frames_per_second())
 	if player.pointing_block != null:
 		text += "\nBlock"
 		text += "\n\tName: " + str(player.pointing_block[0].stringify())
