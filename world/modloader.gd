@@ -35,7 +35,7 @@ static func load_mods():
 
 static func inject_blocks():
 	var mods = load_mods()
-	var Block = load("res://world/block.gd")
+	var Block = preload("res://world/block.gd")
 	for mod in mods:
 		print(mod)
 	return []

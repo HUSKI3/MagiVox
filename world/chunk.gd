@@ -5,31 +5,34 @@ const SIZE = 16
 const TEXTURE_SIZE = 8
 const TEXTURE_TILE_SIZE = 1.0 / TEXTURE_SIZE
 
-var position = Vector3()
+var chunk_position: Vector3
 var data = {
 	
 } # Here we store the chunk data
 
+var colliders = []
 
 onready var world = get_parent()
 
+func _init(pos):
+	chunk_position = pos
+
 func _ready():
 	# Set position
-	transform.origin = position * SIZE
-	name = " Chunk at ({pos})".format({'pos':str(position)})
+	transform.origin = chunk_position * SIZE
+	name = " Chunk at ({pos})".format({'pos':str(chunk_position)})
+	print(name)
 	# Assume world gen
-	data = TerrainDog.flat(position, world.mod_loader)
-	#data = TerrainDog.noisy(position, world.mod_loader, world.noise)
-	print(position)
+	#data = TerrainDog.flat(position, world.mod_loader)
+	data = TerrainDog.noisy(chunk_position, world.mod_loader, world.noise)
+	#print(position)
 	# Gen colliders
 	_gen_colliders()
-	var _thread := Thread.new()
-	_thread.start(self, "_gen_mesh")
-
+	_gen_mesh()
 
 func _gen_colliders():
-	collision_layer = 0xFFFFF
-	collision_mask = 0xFFFFF
+	collision_layer = 1
+	collision_mask = 1
 	for b_pos in data.keys():
 		# var block = data[b_pos]
 		#if block_id not in Blocks.NoCollision: # Disable these block colliders?
@@ -74,7 +77,7 @@ func block_mesh(surface_tool, block_sub_position, block_id):
 		var other_block_position = block_sub_position + vector_direction
 		var other_block_id = 0
 		if other_block_position.x == SIZE:
-			other_block_id = world.get_block_global_position(other_block_position + position * SIZE)
+			other_block_id = world.get_block_global_position(other_block_position + chunk_position * SIZE)
 		elif data.has(other_block_position):
 			other_block_id = data[other_block_position]
 		if block_id != other_block_id: # and is_block_transparent(other_block_id):

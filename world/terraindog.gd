@@ -17,14 +17,14 @@ static func genNoise():
 	var noise = OpenSimplexNoise.new()
 	noise.seed = "cumflex".hash()
 	noise.lacunarity = 2
-	noise.octaves = 4
-	noise.period = 100.0
+	noise.octaves = 1
+	noise.period = 150.0
 	noise.persistence = 0.8
 	return noise
 
 static func noisy(chunk_position, block_store, noise):
 	var block_data = {}
-	
+	var cached_noise = {}
 	#if abs(chunk_position.y) > 5 or abs(chunk_position.y) < 5:
 	#	return {}
 		
@@ -33,8 +33,10 @@ static func noisy(chunk_position, block_store, noise):
 			for z in range(SIZE):
 				var pos = Vector3(x, y, z)
 				#print(pos, -noise.get_noise_2d(chunk_position.x + x, chunk_position.z + z) * SIZE > chunk_position.y + y)
-				if -noise.get_noise_2d(chunk_position.x + x, chunk_position.z + z) * SIZE > chunk_position.y + y:
-					print(chunk_position.x + x, chunk_position.z + z)
+				var i = str(x) + str(z)
+				if !(i in cached_noise):
+					cached_noise[i] = noise.get_noise_2d(chunk_position.x * 16 + x, chunk_position.z * 16 + z) * SIZE
+				if -cached_noise[i] > y + chunk_position.y * 16:
 					block_data[pos] = 1
 	#			else:
 	#				block_data[pos] = 2

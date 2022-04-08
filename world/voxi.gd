@@ -4,7 +4,7 @@ const CHUNK_MID = Vector3(0.5, 0.5, 0.5) * Chunk.SIZE
 const CHUNK_END_SIZE = Chunk.SIZE - 1
 
 
-var render_distance = 5
+var render_distance = 2
 var delete_distance = render_distance + 2
 var render_layer = 0 # This let's us render the circles of chunks around the player
 
@@ -24,7 +24,7 @@ func _ready():
 	#ModLoader.load()
 	# Assume ModLoader injected the data into our Blocks and Entities
 
-func _process(_delta):
+func _physics_process(_delta):
 	var player_chunk = (player.transform.origin / Chunk.SIZE).round()
 	
 	if removing:
@@ -45,8 +45,7 @@ func _process(_delta):
 					continue
 				if chunks.has(chunk_pos):
 					continue
-				var chunk = Chunk.new()
-				chunk.position = chunk_pos
+				var chunk = Chunk.new(chunk_pos)
 				chunks[chunk_pos] = chunk
 				add_child(chunk)
 				return

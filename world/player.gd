@@ -15,7 +15,8 @@ onready var raycast = $Head/RayCast
 onready var voxel_world = $"../voxi"
 onready var crosshair = $crosshair
 
-
+var head_height = 1.6
+var mouse_transform = Vector3.ZERO
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -23,9 +24,9 @@ func _ready():
 
 func _process(_delta):
 	# Mouse movement.
-	_mouse_motion.y = clamp(_mouse_motion.y, -1550, 1550)
-	transform.basis = Basis(Vector3(0, _mouse_motion.x * -0.001, 0))
-	head.transform.basis = Basis(Vector3(_mouse_motion.y * -0.001, 0, 0))
+	_mouse_motion.y = _mouse_motion.y
+	mouse_transform = Vector3(_mouse_motion.y * -0.001, _mouse_motion.x * -0.001, 0)
+	head.transform.basis = Basis(mouse_transform)
 
 	# Block selection.
 	var position = raycast.get_collision_point()
@@ -43,6 +44,8 @@ func _process(_delta):
 	#	_selected_block = wrapi(_selected_block, 1, 30)
 	# Set the appropriate texture.
 	#var uv = Chunk.calculate_block_uvs(_selected_block)
+	
+	movement(_delta)
 
 	# Block breaking/placing.
 	if raycast.is_colliding():
@@ -67,30 +70,34 @@ func _process(_delta):
 		pointing = position
 		pointing_block = null
 
-
-func _physics_process(delta):
+func movement(delta):
 	# Crouching.
 	var crouching = Input.is_action_pressed("crouch")
+	var running = Input.is_action_pressed("run")
 	if crouching:
-		head.transform.origin = Vector3(0, 1.2, 0)
+		head_height = 1.2
 	else:
-		head.transform.origin = Vector3(0, 1.6, 0)
+		head_height = 1.6
+	head.transform.origin.y = head_height - (head.transform.origin.y - head_height) * 0.05
 
 	# Keyboard movement.
 	var movement_vec2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
-	var movement = transform.basis.xform(Vector3(movement_vec2.x, 0, movement_vec2.y))
+	var movement = Basis(mouse_transform * Vector3(0, 1, 0)).xform(Vector3(movement_vec2.x, 0, movement_vec2.y))
 	if !crouching:
 		movement *= 5
+	if running:
+		movement *= 1.5
 
 	# Gravity.
-	velocity.y -= gravity * delta
+	if !is_on_floor():
+		velocity.y -= gravity * delta
+		
+	# Jumping.
+	if is_on_floor() and Input.is_action_pressed("jump") and velocity.y <= 0:
+		velocity.y = 7
 
 	#warning-ignore:return_value_discarded
 	velocity = move_and_slide(Vector3(movement.x, velocity.y, movement.z), Vector3.UP)
-
-	# Jumping, applied next frame.
-	if is_on_floor() and Input.is_action_pressed("jump"):
-		velocity.y = 5
 
 
 func _input(event):
