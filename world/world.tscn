@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://world/voxi.gd" type="Script" id=1]
+[ext_resource path="res://world/player.gd" type="Script" id=2]
+[ext_resource path="res://world/debug_label.gd" type="Script" id=3]
+[ext_resource path="res://assets/ui/crosshair.svg" type="Texture" id=4]
+
+[sub_resource type="CylinderShape" id=1]
+radius = 0.311959
+height = 1.02059
+
+[node name="World" type="Spatial"]
+
+[node name="voxi" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[node name="Player" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.736006, 0 )
+script = ExtResource( 2 )
+
+[node name="Head" type="Spatial" parent="Player"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.406428, 0 )
+
+[node name="Camera" type="Camera" parent="Player/Head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.549341, 0 )
+
+[node name="RayCast" type="RayCast" parent="Player/Head"]
+transform = Transform( 1, 0, 0, 0, -0.0111349, -0.999938, 0, 0.999938, -0.0111349, 0, 0.617259, 0 )
+enabled = true
+cast_to = Vector3( 0, -5, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Player"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.404659, 0 )
+shape = SubResource( 1 )
+
+[node name="crosshair" type="CenterContainer" parent="Player"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TextureRect" type="TextureRect" parent="Player/crosshair"]
+margin_left = 496.0
+margin_top = 284.0
+margin_right = 528.0
+margin_bottom = 316.0
+texture = ExtResource( 4 )
+
+[node name="Label" type="Label" parent="."]
+margin_right = 350.0
+margin_bottom = 288.0
+script = ExtResource( 3 )
+
+[node name="crosshair" type="Node" parent="."]
