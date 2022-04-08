@@ -48,7 +48,7 @@ func _process(_delta):
 	if raycast.is_colliding():
 		# This is needed for debugging and block interaction
 		pointing = position
-		pointing_block = voxel_world.block_store.getBlock(voxel_world.get_block_global_position((position - normal / 2).floor()))
+		pointing_block = voxel_world.mod_loader.getBlock(voxel_world.get_block_global_position((position - normal / 2).floor()))
 		
 		var breaking = Input.is_action_just_pressed("break")
 		var placing = Input.is_action_just_pressed("place")

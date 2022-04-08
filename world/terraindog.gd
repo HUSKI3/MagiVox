@@ -44,12 +44,12 @@ static func bubbly():
 		random_data[vec] = 0
 	return random_data
 
-static func flat(chunk_position):
+static func flat(chunk_position, block_store):
 	var data = {}
 	# We don't want to define a new BlockStore for every load, 
 	# but since this generates per chunk this shouldn't be an issue.
 	# We can just free the variable?
-	var block_store = BlockStore.new()
+	# Moved to voxi.gd -- var block_store = BlockStore.new()
 
 	if chunk_position.y != -1:
 		return data

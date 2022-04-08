@@ -18,7 +18,7 @@ func _ready():
 	transform.origin = position * SIZE
 	name = " Chunk at ({pos})".format({'pos':str(position)})
 	# Assume world gen
-	data = TerrainDog.flat(position)
+	data = TerrainDog.flat(position, world.mod_loader)
 	# Gen colliders
 	_gen_colliders()
 	var _thread := Thread.new()

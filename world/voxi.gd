@@ -14,8 +14,8 @@ var removing = false
 var chunks = {} # store our chunks here
 
 onready var player = $"../Player"
+onready var mod_loader =  BlockStore.new()
 
-var block_store = BlockStore.new()
 
 func _ready():
 	print("[VoxiWorld] --> World ready. Asking Modloader if there's anything to load...")
