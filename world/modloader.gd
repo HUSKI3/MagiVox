@@ -63,13 +63,13 @@ static func gen_atlas(ImagePaths:Array):
 	print(Images,TotalSize)
 	# New image
 	var Result = Image.new()
-	Result.lock()
 	Result.create(
 		TotalSize["width"], 
 		max_height, 
 		false, 
 		Image.FORMAT_RGBA8
 	)
+	Result.lock()
 	
 	var texture_id = 0
 	var x = 0
@@ -77,18 +77,19 @@ static func gen_atlas(ImagePaths:Array):
 	
 	for ImageIndex in Images.size():
 		var current = Images[ImageIndex]
+		current.lock()
 		for _x in range(current.get_size().x):
 			for _y in range(current.get_size().y):
-				var pixel = current.get_pixel(x,y)
+				var pixel = current.get_pixel(_x,_y)
 				Result.set_pixel(_x+x,_y+y, pixel)
 				print("pixel at", _x, _y)
 		
 		Coords[[x,y]] = texture_id
 		#Result.blit_rect(Images[ImageIndex], Images[ImageIndex].get_used_rect(), Vector2(x,y))
 		print("Built an image at {x}:{y}".format({"x":x, "y":y}))
-		x += Images[ImageIndex].data["width"] + 2
+		x += Images[ImageIndex].data["width"]
 		texture_id += 1
-	Result.set_pixel(0,0, Color.aqua)
+		
 	Result.unlock()
 	#Result.compress(Image.COMPRESS_S3TC, Image.COMPRESS_SOURCE_SRGB, 0)
 	return Result
