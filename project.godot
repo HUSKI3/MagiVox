@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://world/block.gd"
 }, {
+"base": "Resource",
+"class": "BlockResource",
+"language": "GDScript",
+"path": "res://block/block_resource.gd"
+}, {
 "base": "Node",
 "class": "BlockStore",
 "language": "GDScript",
@@ -36,6 +41,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Block": "",
+"BlockResource": "",
 "BlockStore": "",
 "Chunk": "",
 "ModLoader": "",
@@ -53,6 +59,12 @@ config/icon="res://icon.png"
 
 window/size/width=1280
 window/size/height=720
+
+[importer_defaults]
+
+texture={
+"flags/filter": false
+}
 
 [input]
 
