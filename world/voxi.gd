@@ -21,7 +21,14 @@ var noise = TerrainDog.genNoise()
 
 func _ready():
 	print("[VoxiWorld] --> World ready. Asking Modloader if there's anything to load...")
-	#ModLoader.load()
+	var image = ModLoader.gen_atlas(
+		[
+			"res://assets/blocks/grass/top.png",
+			"res://assets/blocks/stone/default.png"
+		]
+	)
+	image.save_png("res://assets/atlas.png")
+	#add_child(image)
 	# Assume ModLoader injected the data into our Blocks and Entities
 
 func _physics_process(_delta):

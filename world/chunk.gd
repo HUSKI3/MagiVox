@@ -31,6 +31,17 @@ func _ready():
 	_gen_mesh()
 
 func _gen_colliders():
+	collision_layer = 0xFFFFF
+	collision_mask = 0xFFFFF
+	for b_pos in data.keys():
+		# Check if position above is air
+		var air_pos = b_pos
+		air_pos.y += 1
+		if !(air_pos in data):
+			# Gen collider
+			_create_block_collider(b_pos)
+
+func old_gen_colliders():
 	collision_layer = 1
 	collision_mask = 1
 	for b_pos in data.keys():
