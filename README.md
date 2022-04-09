@@ -1,1 +1,1 @@
-# [Animated] LowPoly Slime
+GODOT4
