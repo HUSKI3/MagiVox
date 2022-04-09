@@ -6,9 +6,9 @@ var identifier
 var texture
 
 func _init(name, id, pos):
-  self.cool_name = name
-  self.identifier = id
-  self.texture = pos
+	self.cool_name = name
+	self.identifier = id
+	self.texture = pos
 
 func stringify():
-  return "(%s)::%s" % [self.cool_name, self.identifier]
+	return "(%s)::%s" % [self.cool_name, self.identifier]

@@ -9,22 +9,22 @@ var mh: MeshInstance = MeshInstance.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-  mh.mesh = $Vox._gen_voxel()
-  add_child(mh)
-  mh.set_owner(self)
+	mh.mesh = $Vox._gen_voxel()
+	add_child(mh)
+	mh.set_owner(self)
 
 func _physics_process(delta) -> void:
-  mh.rotate_y(delta)
-  #mh.rotate_x(delta)
-  #mh.rotate_z(delta)
-  pass
+	mh.rotate_y(delta * 2)
+	mh.rotate_x(delta)
+	#mh.rotate_z(delta)
+	pass
 "
 
 [node name="Test" type="Spatial"]
 script = SubResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.614836, -0.435976, 0.657192, 0, 0.833308, 0.55281, -0.788655, -0.339887, 0.512347, 2.03218, 1.95684, 2.3777 )
+transform = Transform( -0.56067, 0.198887, -0.803799, 0, 0.970726, 0.240191, 0.828039, 0.134668, -0.544257, -1.71581, 0.554744, -1.23834 )
 
 [node name="Vox" type="Node" parent="."]
 script = ExtResource( 1 )
